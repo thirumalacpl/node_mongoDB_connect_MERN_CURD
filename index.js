@@ -1,12 +1,17 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+
+//create an instance of express
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 
 mongoose.Promise = global.Promise;
-//using mongodb
+//connecting to mongodb
 mongoose.connect('mongodb://localhost:27017/mean-app')
 .then(()=>{
         console.log("db connected");
