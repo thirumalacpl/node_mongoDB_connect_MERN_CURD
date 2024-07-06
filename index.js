@@ -55,6 +55,42 @@ app.get('/todos', async(req,res)=> {
         }
 })
 
+// update a todo item
+app.put("/todos/:id", async (req,res)=> {
+        try {
+                const {title,description} = req.body;
+                const id = req.params.id;
+                const updateTodo = await todoModel.findByIdAndUpdate(
+                        id,
+                        { title, description},
+                        {new: true}
+                )
+        
+                if(!updateTodo){
+                        return res.status(404).json({message: "todo not found"})
+                }
+        
+                res.json(updateTodo);
+        } catch (error) {
+                console.log(error)
+                res.status(500).json({message: error.message});
+        }
+       
+})
+
+// delete todo
+app.delete('/todos/:id', async(req, res)=>{
+        try {
+                const id = req.params.id;
+                await todoModel.findByIdAndDelete(id);
+                res.status(204).end();   
+        } catch (error) {
+                console.log(error)
+                res.status(500).json({message: error.message});
+        }
+       
+})
+
 const port = 3001;
 app.listen(port, () => {
         console.log("Server listening")
